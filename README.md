@@ -56,11 +56,17 @@ Python API -> Rust core -> Browser harness -> Web task done
 ```
 
 **1. Install Browser Use with the native core runtime (Python>=3.11):**
+
+Install the security-patched build from this fork ([mp3wizard/browser-use](https://github.com/mp3wizard/browser-use)):
 ```bash
-uv add "browser-use[core]"
-# or: pip install "browser-use[core]"
+uv add "browser-use[core] @ git+https://github.com/mp3wizard/browser-use.git"
+# or: pip install "browser-use[core] @ git+https://github.com/mp3wizard/browser-use.git"
 browser
 ```
+
+> This fork bumps vulnerable dependencies (32 of 33 known CVEs fixed, incl. the
+> `cryptography` CVSS 9.8 Critical). To install the upstream PyPI release instead:
+> `uv add "browser-use[core]"` (or `pip install "browser-use[core]"`).
 
 The `[core]` extra installs the native Browser Use runtime for your platform.
 
@@ -76,7 +82,7 @@ BROWSER_USE_API_KEY=your-key
 
 **Browser Use Terminal:** 
 ```bash
-uv add "browser-use[core]"
+uv add "browser-use[core] @ git+https://github.com/mp3wizard/browser-use.git"
 browser
 ```
 
