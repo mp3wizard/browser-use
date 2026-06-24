@@ -11,7 +11,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "aiohttp==3.13.4",
+    "aiohttp==3.14.1",
     "anyio==4.12.1",
     "bubus==1.5.6",
     "click==8.3.1",
@@ -29,7 +29,7 @@ dependencies = [
     "typing-extensions==4.15.0",
     "uuid7==0.1.0",
     "google-genai==1.65.0",
-    "openai==2.16.0",
+    "openai==2.26.0",
     "anthropic==0.76.0",
     "groq==1.0.0",
     "ollama==0.6.1",
@@ -37,7 +37,7 @@ dependencies = [
     "google-auth==2.48.0",
     "google-auth-oauthlib==1.2.4",
     "mcp==1.26.0",
-    "pypdf==6.10.2",
+    "pypdf==6.13.3",
     "reportlab==4.4.9",
     "cdp-use==1.4.5",
     "pyotp==2.9.0",
@@ -67,7 +67,7 @@ core = [
     "browser-use-core==0.13.2; sys_platform == 'win32' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 ]
 aws = ["boto3==1.42.37"]
-oci = ["oci==2.166.0"]
+oci = ["oci==2.180.0"]  # bumped from 2.166.0 to loosen cryptography/pyopenssl caps (CVE remediation)
 video = ["imageio[ffmpeg]==2.37.2", "numpy==2.4.1"]
 examples = [
     "agentmail==0.0.59",
@@ -76,7 +76,7 @@ examples = [
     "imgcat==0.6.0",
     # "stagehand-py>=0.3.6",
     # "browserbase>=0.4.0",
-    "langchain-openai==1.1.7",
+    "langchain-openai==1.1.14",
 ]
 eval = [
     "lmnr[all]==0.7.42",
@@ -213,6 +213,15 @@ log_level = "DEBUG"
 allow-direct-references = true
 
 [tool.uv]
+# Security: force minimum safe versions of transitive deps (CVE remediation, 2026-06-24)
+# cryptography PYSEC-2026-36 (CVSS 9.8) fixed in 46.0.7; starlette CVE-2026-48818 (SSRF+NTLM) in 1.3.1;
+# pyopenssl CVE-2026-27459 in 26.0.0. Upper bounds (<47, <27) are the ceiling imposed by oci 2.180.0.
+# RESIDUAL: cryptography GHSA-537c-gmf6-5ccf (7.5) needs >=48.0.1, blocked by oci's <47 cap.
+constraint-dependencies = [
+    "cryptography>=46.0.7,<47",
+    "pyopenssl>=26.0.0,<27",
+    "starlette>=1.3.1",
+]
 # required-environments = [
 #     "sys_platform == 'darwin' and platform_machine == 'arm64'",
 #     "sys_platform == 'darwin' and platform_machine == 'x86_64'",
@@ -226,10 +235,10 @@ dev-dependencies = [
     "ruff==0.14.14",
     "tokencost==0.1.26",
     "build==1.4.0",
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pytest-asyncio==1.3.0",
     "pytest-httpserver==1.1.3",
-    "fastapi==0.128.0",
+    "fastapi==0.138.0",
     "inngest==0.5.15",
     "uvicorn==0.40.0",
     "ipdb==0.13.13",
@@ -241,5 +250,5 @@ dev-dependencies = [
     "lmnr[all]==0.7.42",
     # "pytest-playwright-asyncio>=0.7.0",  # not actually needed I think
     "pytest-timeout==2.4.0",
-    "pydantic_settings==2.12.0",
+    "pydantic_settings==2.14.2",
 ]
